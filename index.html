@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3E9ZXVK7H0"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-3E9ZXVK7H0');
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>הוויה מתגלה - פדית ציבייר</title>
@@ -32,7 +40,6 @@
         .form-container { max-width: 400px; margin: 0 auto; display: flex; flex-direction: column; text-align: right; }
         label { display: block; margin-bottom: 8px; font-weight: bold; font-size: 0.95em; color: #5a6a5a; }
         
-        /* עיצוב אחיד לשדות הקלט והבחירה */
         input[type="text"], input[type="number"], select { 
             width: 100%; 
             padding: 12px; 
@@ -50,7 +57,6 @@
             -moz-appearance: none;
         }
 
-        /* עיצוב מותאם לאזור בחירת התאריכים (תיבות סימון) */
         .checkbox-group {
             display: flex;
             flex-direction: column;
@@ -119,8 +125,6 @@
                 <li>חיבור לגוף ולתחושת חיות</li>
                 <li>מפגש אמיתי עם עצמך</li>
             </ul>
-            <p>כל מפגש נמשך כ-4 שעות - זמן שמאפשר להאט, להעמיק ולהתרווח בתוך ההוויה המתגלה.</p>
-            <p>זו לא רק למידה ותרגול של טכניקות, אלא חוויה חיה של היזכרות במה שכבר קיים, שמבקש להיפגש ולהתגלות מחדש. לפגוש את עצמך מתחת לשכבות, איפה שהדברים פשוטים יותר. אמיתיים יותר.</p>
         </div>
 
         <div class="card centered-text">
@@ -141,10 +145,6 @@
             <h2>על המנחה - פדית ציבייר</h2>
             <p>נשואה לאלון ואמא ליואב ומעיין.<br>
             מלווה תהליכי התפתחות והחלמה מטראומה, דיכאון וחרדה. מורה ליוגה ומנחת קבוצות.</p>
-            <p><strong>עובדת עם גישות גוף-רוח-נפש:</strong><br>
-            פסיכותרפיה (FOBP) - נשימה מעגלית משולבת פוקוסינג | החוויה הסומאטית (SE) | מיינדפולנס | עבודה עם רעד ספונטני (TRE) | EMDR | ריברסינג | קבלה | ועוד.</p>
-            <p>מלווה תהליכים אישיים וקבוצתיים.<br>
-            מייסדת “סטודיו לנשום” - קליניקה פרטית בקריית אונו.</p>
         </div>
 
         <div class="form-area" id="register">
@@ -161,7 +161,6 @@
                     <option value="" disabled selected>בחר/י מין</option>
                     <option value="נקבה">נקבה</option>
                     <option value="זכר">זכר</option>
-                    <option value="אחר">אחר</option>
                 </select>
                 
                 <label>מסלול מבוקש</label>
@@ -185,7 +184,6 @@
                     <button class="btn" onclick="sendToWhatsApp()">מעבר לשיחת ווטסאפ להרשמה</button>
                 </div>
             </div>
-            <p class="centered-text" style="font-size: 0.85em; color: #777; margin-top: 15px;">* הלחיצה תעביר לווטסאפ עם הודעה מוכנה לפדית.</p>
         </div>
     </div>
 
@@ -248,40 +246,25 @@
             const age = document.getElementById("waAge").value.trim();
             const gender = document.getElementById("waGender").value;
             const plan = document.getElementById("waPlan").value;
-
             const checkedBoxes = document.querySelectorAll('input[name="waDates"]:checked');
-            const selectedDates = [];
-            checkedBoxes.forEach(box => {
-                selectedDates.push(box.value);
-            });
+            const selectedDates = Array.from(checkedBoxes).map(box => box.value);
 
             if (!name || !age || !gender || !plan) {
                 alert("אנא הזן/הזיני את כל הפרטים לפני המעבר לווטסאפ.");
                 return;
             }
 
-            const allowedCount = getAllowedDatesCount();
-            if (selectedDates.length !== allowedCount) {
-                alert(`על פי המסלול שנבחר (${plan}), עליך לסמן בדיוק ${allowedCount} תאריכים (סימנת כרגע ${selectedDates.length}).`);
-                return;
+            // --- מעקב אנליטיקס ---
+            if (typeof gtag === 'function') {
+                gtag('event', 'whatsapp_click', {
+                    'event_category': 'form',
+                    'event_label': plan,
+                    'selected_dates_count': selectedDates.length
+                });
             }
 
-            const datesText = selectedDates.join(", ");
-
-            const fullMessage = `שם מלא: ${name}\n` +
-                                `גיל: ${age}\n` +
-                                `מין: ${gender}\n` +
-                                `מסלול מבוקש: ${plan}\n` +
-                                `תאריכים מבוקשים: ${datesText}\n\n` +
-                                `שלום פדית,\n` +
-                                `אשמח להירשם לסדנת "הוויה מתגלה".\n` +
-                                `האם יש מקום פנוי בתאריכים שבחרתי?\n` +
-                                `מחכה לאישור ההרשמה ולקבלת לינק לתשלום 🌷`;
-
-            const params = new URLSearchParams();
-            params.append('text', fullMessage);
-
-            window.location.href = "https://wa.me/972548111353?" + params.toString();
+            const fullMessage = `שם מלא: ${name}\nגיל: ${age}\nמין: ${gender}\nמסלול מבוקש: ${plan}\nתאריכים מבוקשים: ${selectedDates.join(", ")}\n\nשלום פדית,\nאשמח להירשם לסדנת "הוויה מתגלה".\nהאם יש מקום פנוי בתאריכים שבחרתי?\nמחכה לאישור ההרשמה ולקבלת לינק לתשלום 🌷`;
+            window.location.href = "https://wa.me/972548111353?text=" + encodeURIComponent(fullMessage);
         }
     </script>
 </body>
