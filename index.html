@@ -249,8 +249,16 @@
             const checkedBoxes = document.querySelectorAll('input[name="waDates"]:checked');
             const selectedDates = Array.from(checkedBoxes).map(box => box.value);
 
+            // בדיקה שכל השדות מולאו
             if (!name || !age || !gender || !plan) {
                 alert("אנא הזן/הזיני את כל הפרטים לפני המעבר לווטסאפ.");
+                return;
+            }
+
+            // *** הבדיקה החדשה - וידוא התאמה בין כמות התאריכים שסומנו למסלול שנבחר ***
+            const allowedCount = getAllowedDatesCount();
+            if (selectedDates.length !== allowedCount) {
+                alert(`על פי המסלול שבחרת (${plan}), עליך לסמן בדיוק ${allowedCount} תאריכים (סימנת כרגע ${selectedDates.length}).`);
                 return;
             }
 
