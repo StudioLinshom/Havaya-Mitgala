@@ -181,6 +181,7 @@
                     <option value="2 מפגשים">2 מפגשים (610 ₪)</option>
                     <option value="3 מפגשים">3 מפגשים (820 ₪)</option>
                     <option value="התהליך המלא">התהליך המלא - 4 מפגשים (980 ₪)</option>
+                    <option value="אשמח להתייעץ לגבי מסלול/התאמה לסדנה">אשמח להתייעץ לגבי מסלול/התאמה לסדנה</option>
                 </select>
 
                 <label>תאריכים מבוקשים</label>
@@ -208,6 +209,7 @@
             if (plan === "2 מפגשים") return 2;
             if (plan === "3 מפגשים") return 3;
             if (plan === "התהליך המלא") return 4;
+            if (plan === "אשמח להתייעץ לגבי מסלול/התאמה לסדנה") return 4; // מאפשר לסמן עד 4 תאריכים
             return 0;
         }
 
@@ -271,7 +273,8 @@
             }
 
             const allowedCount = getAllowedDatesCount();
-            if (selectedDates.length !== allowedCount) {
+            // כאן החרגנו את אפשרות ההתייעצות מאימות מספר התאריכים
+            if (plan !== "אשמח להתייעץ לגבי מסלול/התאמה לסדנה" && selectedDates.length !== allowedCount) {
                 alert(`על פי המסלול שנבחר (${plan}), עליך לסמן בדיוק ${allowedCount} תאריכים (סימנת כרגע ${selectedDates.length}).`);
                 return;
             }
