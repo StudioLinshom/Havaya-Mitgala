@@ -209,7 +209,7 @@
             if (plan === "2 מפגשים") return 2;
             if (plan === "3 מפגשים") return 3;
             if (plan === "התהליך המלא") return 4;
-            if (plan === "אשמח להתייעץ לגבי מסלול/התאמה לסדנה") return 4; // מאפשר לסמן עד 4 תאריכים
+            if (plan === "אשמח להתייעץ לגבי מסלול/התאמה לסדנה") return 4;
             return 0;
         }
 
@@ -273,7 +273,6 @@
             }
 
             const allowedCount = getAllowedDatesCount();
-            // כאן החרגנו את אפשרות ההתייעצות מאימות מספר התאריכים
             if (plan !== "אשמח להתייעץ לגבי מסלול/התאמה לסדנה" && selectedDates.length !== allowedCount) {
                 alert(`על פי המסלול שנבחר (${plan}), עליך לסמן בדיוק ${allowedCount} תאריכים (סימנת כרגע ${selectedDates.length}).`);
                 return;
@@ -290,16 +289,25 @@
             // ---------------------------------------
 
             const datesText = selectedDates.join(", ");
+            let fullMessage = "";
 
-            const fullMessage = `שם מלא: ${name}\n` +
-                                `גיל: ${age}\n` +
-                                `מין: ${gender}\n` +
-                                `מסלול מבוקש: ${plan}\n` +
-                                `תאריכים מבוקשים: ${datesText}\n\n` +
-                                `שלום פדית,\n` +
-                                `אשמח להירשם לסדנת "הוויה מתגלה".\n` +
-                                `האם יש מקום פנוי בתאריכים שבחרתי?\n` +
-                                `מחכה לאישור ההרשמה ולקבלת לינק לתשלום 🌷`;
+            if (plan === "אשמח להתייעץ לגבי מסלול/התאמה לסדנה") {
+                fullMessage = `אשמח להתייעץ לגבי מסלול/התאמה לסדנה\n`;
+                if (datesText !== "") {
+                    fullMessage += `תאריכים מבוקשים: ${datesText}\n`;
+                }
+                fullMessage += `🌷`;
+            } else {
+                fullMessage = `שם מלא: ${name}\n` +
+                              `גיל: ${age}\n` +
+                              `מין: ${gender}\n` +
+                              `מסלול מבוקש: ${plan}\n` +
+                              `תאריכים מבוקשים: ${datesText}\n\n` +
+                              `שלום פדית,\n` +
+                              `אשמח להירשם לסדנת "הוויה מתגלה".\n` +
+                              `האם יש מקום פנוי בתאריכים שבחרתי?\n` +
+                              `מחכה לאישור ההרשמה ולקבלת לינק לתשלום 🌷`;
+            }
 
             const params = new URLSearchParams();
             params.append('text', fullMessage);
