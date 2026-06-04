@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-3E9ZXVK7H0"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -292,7 +291,10 @@
             let fullMessage = "";
 
             if (plan === "אשמח להתייעץ לגבי מסלול/התאמה לסדנה") {
-                fullMessage = `אשמח להתייעץ לגבי מסלול/התאמה לסדנה`;
+                fullMessage = `שם מלא: ${name}\n` +
+                              `גיל: ${age}\n` +
+                              `מין: ${gender}\n` +
+                              `מסלול מבוקש: ${plan}`;
                 if (datesText !== "") {
                     fullMessage += `\nתאריכים מבוקשים: ${datesText}`;
                 }
